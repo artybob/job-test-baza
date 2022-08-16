@@ -1,1 +1,1 @@
-a:2:{s:11:"folder_from";s:7:"sdddccc";s:9:"folder_to";s:12:"zzzzzzzzzzzz";}
+a:2:{s:11:"folder_from";s:7:"D:\1111";s:9:"folder_to";s:7:"D:\2222";}

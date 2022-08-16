@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Storage;
 class FileController extends Controller
 {
 
-    public function index() {
+    public function index()
+    {
         $fileUrls = unserialize(file_get_contents("files_config.txt"));
 
         return view('job_task', [
             'file_urls' => $fileUrls
         ]);
     }
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
@@ -31,7 +33,7 @@ class FileController extends Controller
         $content = $request->chosenFile->get();
         $pieces = explode($request->symbol, $content);
 
-        $pieces = array_filter($pieces, function($element) {
+        $pieces = array_filter($pieces, function ($element) {
             return !empty($element);
         });
 
@@ -50,9 +52,9 @@ class FileController extends Controller
         ]);
 
         $conf = [
-                'folder_from' => $request->folder_from,
-                'folder_to' => $request->folder_to,
-            ];
+            'folder_from' => $request->folder_from,
+            'folder_to' => $request->folder_to,
+        ];
 
         $fd = fopen("files_config.txt", 'w');
 
@@ -64,11 +66,14 @@ class FileController extends Controller
     /**
      * @return void
      */
-    public function copyFiles() {
+    public function copyFiles()
+    {
         $fileUrls = unserialize(file_get_contents("files_config.txt"));
 
-//        foreach(glob('old_directory/*.*') as $file) {
-//            copy($fileUrls['folder_from'].$file, $fileUrls['folder_to'].$file);
-//        }
+        foreach (glob($fileUrls['folder_from'] . '\*') as $file) {
+            copy($file, $fileUrls['folder_to'] . "/" . basename($file));
+            unlink($file);
+        }
+
     }
 }
