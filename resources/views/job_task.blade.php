@@ -16,58 +16,79 @@
 <body class="antialiased">
 <div id="app">
     <v-app>
-        <v-main>
-            <v-container>
-                Форма файла
+        <v-container fill-height fluid>
+            <v-row align="center"
+                   justify="center">
+                <v-col cols="6">
+                    <v-card style="padding: 20px">
+                        <div class="card-header mb-4">
+                            <h3>File form</h3>
+                        </div>
+                        <div class="card-body">
+                            <v-row>
+                                <v-col
+                                    md="8"
+                                >
+                                    <v-file-input
+                                        v-model="chosenFile"
+                                        outlined
+                                        required
+                                        accept=".txt"
+                                        label="File input"
+                                    ></v-file-input>
+                                </v-col>
+                                <v-col
+                                    md="2"
+                                >
+                                    <v-text-field
+                                        v-model="symbol"
+                                        label="Symbol"
+                                        outlined
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col
+                                    md="2"
+                                >
+                                    <v-btn
+                                        depressed
+                                        outlined
+                                        block
+                                        text
+                                        style="height: 56px"
+                                        id="fileButton"
+                                        @click="processFile()">
+                                        Go
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
 
-                <v-row>
-                    <v-col
-                        md="4"
-                    >
-                        <v-file-input
-                            v-model="chosenFile"
-                            outlined
-                            required
-                            accept=".txt"
-                            label="File input"
-                        ></v-file-input>
-                    </v-col>
-                    <v-col
-                        md="4"
-                    >
-                        <v-text-field
-                            v-model="symbol"
-                            label="Symbol"
-                            outlined
-                            required
-                        ></v-text-field>
-                    </v-col>
-                    <v-col
-                        md="4"
-                    >
-                        <v-btn
-                            id="fileButton"
-                            @click="processFile()">
-                            Go
-                        </v-btn>
-                    </v-col>
-                </v-row>
-                <v-alert
-                    text
-                    :type="alertType"
-                    v-model="alert"
-                >
-                    @{{ resText }}
-                </v-alert>
-                <v-row>
-                    <ul v-for="p in pieces">
-                        <li>
-                            @{{p}}
-                        </li>
-                    </ul>
-                </v-row>
-            </v-container>
-        </v-main>
+                            <v-alert
+                                text
+                                :type="alertType"
+                                v-model="alert"
+                            >
+                                @{{ resText }}
+                            </v-alert>
+
+                            <v-row>
+                                <div v-if="pieces" class="ml-4 mb-4 mt-4" style="overflow: overlay;">
+                                    <span class="mb-4">
+                                        <h3>Result:</h3>
+                                    </span>
+                                    <ul v-for="p in pieces">
+                                        <li>
+                                            @{{p}} - (@{{p.length}})
+                                        </li>
+                                    </ul>
+                                </div>
+                            </v-row>
+
+                        </div>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
 
     </v-app>
 
@@ -91,14 +112,17 @@
             alert: false,
             resText: '',
             symbol: '@',
-            pieces: [],
+            pieces: null,
             alertType: 'success',
         },
         methods: {
             processFile() {
+                //загрузка файла
+                this.pieces = null
                 this.resText = ''
                 this.alert = false
                 this.alertType = 'success'
+                this.resText = 'OK'
 
                 if (!this.chosenFile) {
                     this.resText = 'No File Chosen'
@@ -118,7 +142,6 @@
                         this.resText = err.response.data.message
                     }
                 }).then((res) => {
-                    this.resText = 'OK'
                     this.pieces = res.data.pieces
                 });
 
