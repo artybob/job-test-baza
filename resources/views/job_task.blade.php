@@ -133,8 +133,9 @@
             </v-container>
 
             <v-snackbar
-                text
-                :type="alertType"
+                timeout="4000"
+                success
+                :color="alertType"
                 v-model="alert"
             >
                 @{{ resText }}
@@ -160,8 +161,8 @@
         vuetify: new Vuetify(),
         data: {
             chosenFile: null,
-            folderFrom: null,
-            folderTo: null,
+            folderFrom: "{{$file_urls['folder_from']}}",
+            folderTo: "{{$file_urls['folder_to']}}",
             alert: false,
             resText: '',
             symbol: '@',

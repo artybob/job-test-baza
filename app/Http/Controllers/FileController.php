@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
+
+    public function index() {
+        $fileUrls = unserialize(file_get_contents("files_config.txt"));
+
+        return view('job_task', [
+            'file_urls' => $fileUrls
+        ]);
+    }
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
@@ -53,15 +61,14 @@ class FileController extends Controller
         return response(['msg' => 'urls changed']);
     }
 
+    /**
+     * @return void
+     */
     public function copyFiles() {
-//        if() {
-//
+        $fileUrls = unserialize(file_get_contents("files_config.txt"));
+
+//        foreach(glob('old_directory/*.*') as $file) {
+//            copy($fileUrls['folder_from'].$file, $fileUrls['folder_to'].$file);
 //        }
-        $fd = fopen("files_config.txt", 'w');
-
-
-        foreach(glob('old_directory/*.*') as $file) {
-            copy('old_directory/'.$file, 'new_directory/'.$file);
-        }
     }
 }
