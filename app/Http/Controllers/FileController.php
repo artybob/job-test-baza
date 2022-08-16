@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
@@ -29,14 +30,38 @@ class FileController extends Controller
         return response(['pieces' => $pieces]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function changeFolders(Request $request)
     {
         $request->validate([
             'folder_from' => 'required|string',
-            'folder_to' => 'required|string',
-            'time' => 'required|string',
+            'folder_to' => 'required|string'
         ]);
 
-        return 'OK';
+        $conf = [
+                'folder_from' => $request->folder_from,
+                'folder_to' => $request->folder_to,
+            ];
+
+        $fd = fopen("files_config.txt", 'w');
+
+        fwrite($fd, serialize($conf));
+
+        return response(['msg' => 'urls changed']);
+    }
+
+    public function copyFiles() {
+//        if() {
+//
+//        }
+        $fd = fopen("files_config.txt", 'w');
+
+
+        foreach(glob('old_directory/*.*') as $file) {
+            copy('old_directory/'.$file, 'new_directory/'.$file);
+        }
     }
 }
