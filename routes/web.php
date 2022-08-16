@@ -18,5 +18,3 @@ Route::get('/', [\App\Http\Controllers\FileController::class, 'index']);
 Route::post('/process_file', [\App\Http\Controllers\FileController::class, 'processFile']);
 
 Route::post('/change_folders', [\App\Http\Controllers\FileController::class, 'changeFolders']);
-
-Route::get('/copy_files', [\App\Http\Controllers\FileController::class, 'copyFiles']);

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
@@ -61,19 +59,5 @@ class FileController extends Controller
         fwrite($fd, serialize($conf));
 
         return response(['msg' => 'urls changed']);
-    }
-
-    /**
-     * @return void
-     */
-    public function copyFiles()
-    {
-        $fileUrls = unserialize(file_get_contents("files_config.txt"));
-
-        foreach (glob($fileUrls['folder_from'] . '\*') as $file) {
-            copy($file, $fileUrls['folder_to'] . "/" . basename($file));
-            unlink($file);
-        }
-
     }
 }
